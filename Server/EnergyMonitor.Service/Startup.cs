@@ -1,3 +1,4 @@
+using EnergyMonitor.Service.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Controllers;
@@ -34,6 +35,7 @@ namespace EnergyMonitor.Service
         {
             _container = new Container();
 
+
             // Add framework services.
             services.AddMvc()
                 .AddJsonOptions(opt => 
@@ -53,6 +55,13 @@ namespace EnergyMonitor.Service
         {
             app.UseSimpleInjectorAspNetRequestScoping(_container);
             _container.Options.DefaultScopedLifestyle = new AspNetRequestLifestyle();
+
+            var dbSettingsSection = Configuration.GetSection("DbSettings");
+            var dbSettings = dbSettingsSection.Get<DbSettings>();
+
+            System.Console.WriteLine(dbSettings?.MongoDbName);
+
+            _container.RegisterSingleton<IDbSettings>(dbSettings);
 
             _container.RegisterMvcControllers(app);
             _container.RegisterMvcViewComponents(app);

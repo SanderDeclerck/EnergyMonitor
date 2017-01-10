@@ -8,7 +8,9 @@
   "dependencies": {
     "NETStandard.Library": "1.6.0",
     "EnergyMonitor.Service.Model": "*",
-    "SimpleInjector": "3.3.0"
+    "SimpleInjector": "3.3.0",
+    "MongoDB.Driver": "2.3.0",
+    "EnergyMonitor.Service.Infrastructure": "*"
   },
 
   "frameworks": {

@@ -9,6 +9,7 @@ namespace SimpleInjector
             container.RegisterDaoDependencies();
 
             container.Register<IReadingsLogicController, ReadingsLogicController>();
+            container.Register<IMeterLogicController, MeterLogicController>();
         }
     }
 }
