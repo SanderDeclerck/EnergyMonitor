@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 
 namespace Invoicing.Base.Ddd
 {
     public abstract class Entity
     {
         private int? _requestedHashCode;
-        public int Id { get; protected set; }
+        public Guid Id { get; protected set; }
 
         public bool IsTransient()
         {
-            return Id == default(int);
+            return Id == default(Guid);
         }
 
         public override bool Equals(object obj)
