@@ -3,16 +3,14 @@ using Invoicing.Base.Ddd;
 
 namespace BuildingConfiguration.Domain.Aggregates.BuildingAggregate
 {
-    public class Address : ValueObject
+    public class BuildingLocation : ValueObject
     {
-        public string Street { get; }
         public string City { get; }
         public string PostalCode { get; }
         public string Country { get; }
 
-        public Address(string street, string city, string postalCode, string country)
+        public BuildingLocation(string city, string postalCode, string country)
         {
-            Street = street;
             City = city;
             PostalCode = postalCode;
             Country = country;
@@ -20,7 +18,6 @@ namespace BuildingConfiguration.Domain.Aggregates.BuildingAggregate
 
         protected override IEnumerable<object> GetAtomicValues()
         {
-            yield return Street;
             yield return City;
             yield return PostalCode;
             yield return Country;

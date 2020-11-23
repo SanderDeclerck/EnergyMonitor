@@ -1,14 +1,18 @@
+using System;
 using Invoicing.Base.Ddd;
 
 namespace BuildingConfiguration.Domain.Aggregates.BuildingAggregate
 {
     public class Building : Entity, IAggregateRoot
     {
-        public Address Address { get; private set; }
+        public string Name { get; private set; }
+        public BuildingLocation Location { get; private set; }
 
-        public Building(Address address)
+        public Building(string name, BuildingLocation address)
         {
-            Address = address;
+            Id = Guid.NewGuid();
+            Name = name;
+            Location = address;
         }
     }
 }
