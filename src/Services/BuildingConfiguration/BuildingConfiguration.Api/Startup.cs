@@ -38,11 +38,13 @@ namespace BuildingConfiguration.Api
             });
 
             services.AddScoped<IMongoClient>(_ => new MongoClient(Configuration.GetConnectionString("MongoConnectionString")));
-            services.AddScoped<IBuildingRepository>(provider => 
+            services.AddScoped<IBuildingRepository>(provider =>
             {
                 var mongoClient = provider.GetService<IMongoClient>();
                 return new BuildingRepository(mongoClient.GetDatabase("BuildingApi"));
             });
+
+            services.AddCors(corsOptions => corsOptions.AddDefaultPolicy(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,7 +58,7 @@ namespace BuildingConfiguration.Api
             }
 
             app.UseHttpsRedirection();
-
+            app.UseCors();
             app.UseRouting();
 
             app.UseAuthorization();
@@ -64,7 +66,7 @@ namespace BuildingConfiguration.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGet("/", context =>
-                {                    
+                {
                     context.Response.Redirect("/swagger");
                     return Task.CompletedTask;
                 });
