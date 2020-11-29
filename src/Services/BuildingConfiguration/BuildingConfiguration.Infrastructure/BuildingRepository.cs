@@ -34,5 +34,17 @@ namespace BuildingConfiguration.Infrastructure
             var buildingCursor = await BuildingCollection.FindAsync(Builders<Building>.Filter.Where(building => building.Id == id));
             return await buildingCursor.FirstOrDefaultAsync();
         }
+
+        public async Task Delete(Guid id, CancellationToken cancellationToken)
+        {
+            await BuildingCollection.DeleteOneAsync(Builders<Building>.Filter.Where(building => building.Id == id), cancellationToken);
+        }
+
+        public async Task Update(Building building, CancellationToken cancellationToken)
+        {
+            await BuildingCollection.ReplaceOneAsync(
+                Builders<Building>.Filter.Where(buildingRecord => buildingRecord.Id == building.Id),
+                building);
+        }
     }
 }

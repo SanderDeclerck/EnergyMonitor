@@ -37,12 +37,7 @@ namespace BuildingConfiguration.Api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BuildingConfiguration.Api", Version = "v1" });
             });
 
-            services.AddScoped<IMongoClient>(_ => new MongoClient(Configuration.GetConnectionString("MongoConnectionString")));
-            services.AddScoped<IBuildingRepository>(provider =>
-            {
-                var mongoClient = provider.GetService<IMongoClient>();
-                return new BuildingRepository(mongoClient.GetDatabase("BuildingApi"));
-            });
+            services.SetupInfrastructure(Configuration.GetConnectionString("MongoConnectionString"));
 
             services.AddCors(corsOptions => corsOptions.AddDefaultPolicy(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
         }

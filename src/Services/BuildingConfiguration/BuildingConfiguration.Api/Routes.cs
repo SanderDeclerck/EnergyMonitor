@@ -4,5 +4,6 @@ namespace BuildingConfiguration.Api
     {
         public const string BuildingUri = "api/building";
         public const string BuildingDetailUri = "api/building/{id}";
+        public const string MeterUri = "api/building/{buildingId}/meter";
     }
 }
