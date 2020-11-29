@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.ApiEndpoints;
@@ -35,9 +37,24 @@ namespace BuildingConfiguration.Api.Endpoints.Buildings
                 return NotFound($"The building with id \"{id}\" could not be found.");
             }
 
-            return Ok(new Result(building.Id.ToString(), building.Name, building.Location.PostalCode, building.Location.City, building.Location.Country));
+            return Ok(MapBuildingToResult(building));
         }
 
-        public record Result(string Id, string Name, string PostalCode, string City, string Country);
+        private static Result MapBuildingToResult(Building building)
+        {
+            return new Result(building.Id.ToString(),
+                building.Name,
+                building.Location.PostalCode,
+                building.Location.City,
+                building.Location.Country,
+                building.Meters.Select(meter =>
+                    new Meter(meter.EanCode,
+                        meter.MeterType,
+                        meter.Registers.Select(register => new Register(register.Tariff)))));
+        }
+
+        public record Result(string Id, string Name, string PostalCode, string City, string Country, IEnumerable<Meter> meters);
+        public record Meter(string EanCode, int meterType, IEnumerable<Register> registers);
+        public record Register(int tariff);
     }
 }

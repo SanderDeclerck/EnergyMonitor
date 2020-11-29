@@ -21,12 +21,16 @@ export function BuildingForm({ onBuildingCreated }) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formState),
-    }).then(onBuildingCreated);
+    }).then(buildingCreated);
+  }
+
+  function buildingCreated() {
+    onBuildingCreated();
+    setFormState(initialState);
   }
 
   return (
     <div>
-      <h1>Create new building</h1>
       <label htmlFor="name">Name:</label>
       <input
         type="text"
