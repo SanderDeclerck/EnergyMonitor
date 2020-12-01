@@ -53,8 +53,8 @@ namespace BuildingConfiguration.Api.Endpoints.Buildings
                         meter.Registers.Select(register => new Register(register.Tariff)))));
         }
 
-        public record Result(string Id, string Name, string PostalCode, string City, string Country, IEnumerable<Meter> meters);
-        public record Meter(string EanCode, int meterType, IEnumerable<Register> registers);
-        public record Register(int tariff);
+        public record Result(string Id, string Name, string PostalCode, string City, string Country, IEnumerable<Meter> Meters);
+        public record Meter(string EanCode, int MeterType, IEnumerable<Register> Registers);
+        public record Register(int Tariff);
     }
 }

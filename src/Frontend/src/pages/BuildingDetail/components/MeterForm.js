@@ -28,7 +28,7 @@ export function MeterForm({ buildingId, onMeterCreated }) {
     fetch(`https://localhost:5001/api/building/${buildingId}/meter`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formState),
+      body: JSON.stringify(data),
     }).then(meterCreated);
   }
 
@@ -39,15 +39,14 @@ export function MeterForm({ buildingId, onMeterCreated }) {
 
   return (
     <div>
-      <label htmlFor="eanCode">Ean code:</label>
+      <label htmlFor="eanCode">Ean code</label>
       <input
         type="text"
         name="eanCode"
         value={formState.eanCode}
         onChange={handleInputChange}
       />
-      <br />
-      <label htmlFor="meterType">Type:</label>
+      <label htmlFor="meterType">Type</label>
       <select
         name="meterType"
         value={formState.meterType}
@@ -58,7 +57,6 @@ export function MeterForm({ buildingId, onMeterCreated }) {
         <option value="2">Water</option>
         <option value="3">Gas</option>
       </select>
-      <br />
       <input
         hidden={formState.meterType != 1}
         type="checkbox"

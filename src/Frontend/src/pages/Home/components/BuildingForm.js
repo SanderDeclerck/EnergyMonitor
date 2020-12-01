@@ -31,7 +31,7 @@ export function BuildingForm({ onBuildingCreated }) {
 
   return (
     <div>
-      <label htmlFor="name">Name:</label>
+      <label htmlFor="name">Name</label>
       <input
         type="text"
         name="name"
@@ -39,8 +39,7 @@ export function BuildingForm({ onBuildingCreated }) {
         onChange={handleInputChange}
         required
       ></input>
-      <br />
-      <label htmlFor="postalcode">Postal code:</label>
+      <label htmlFor="postalcode">Postal code</label>
       <input
         type="text"
         name="postalcode"
@@ -48,8 +47,7 @@ export function BuildingForm({ onBuildingCreated }) {
         onChange={handleInputChange}
         required
       ></input>
-      <br />
-      <label htmlFor="city">City:</label>
+      <label htmlFor="city">City</label>
       <input
         type="text"
         name="city"
@@ -57,8 +55,7 @@ export function BuildingForm({ onBuildingCreated }) {
         onChange={handleInputChange}
         required
       ></input>
-      <br />
-      <label htmlFor="country">Country:</label>
+      <label htmlFor="country">Country</label>
       <input
         type="text"
         name="country"
@@ -66,7 +63,6 @@ export function BuildingForm({ onBuildingCreated }) {
         onChange={handleInputChange}
         required
       ></input>
-      <br />
       <button onClick={createBuilding}>Add</button>
     </div>
   );

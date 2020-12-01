@@ -22,12 +22,13 @@ namespace BuildingConfiguration.Api.Endpoints.Buildings
         {
             var buildings = await _buildingRepository.GetAll(cancellationToken);
 
-            var buildingRecords = buildings.Select(building => new BuildingRecord(building.Id.ToString(), building.Name));
+            var buildingRecords = buildings.Select(building => new BuildingRecord(building.Id.ToString(), building.Name, building.Meters.Select(meter => new MeterRecord(meter.EanCode, meter.MeterType))));
 
             return Ok(new Result(buildingRecords));
         }
 
-        public record Result(IEnumerable<BuildingRecord> buildings);
-        public record BuildingRecord(string Id, string Name);
+        public record Result(IEnumerable<BuildingRecord> Buildings);
+        public record BuildingRecord(string Id, string Name, IEnumerable<MeterRecord> Meters);
+        public record MeterRecord(string EanCode, int MeterType);
     }
 }
