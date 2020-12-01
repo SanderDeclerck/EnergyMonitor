@@ -1,42 +1,55 @@
+import {
+  faBolt,
+  faBurn,
+  faPencilAlt,
+  faTint,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 
 export function MeterList({ meters }) {
   return (
-    <ul>
+    <>
       {meters.map((meter) => (
         <MeterListItem meter={meter} />
       ))}
-    </ul>
+    </>
   );
 }
 
 function MeterListItem({ meter }) {
   var meterType = mapMeterType(meter.meterType);
   return (
-    <li key={meter.eanCode}>
-      {meterType.name}
-      <ul>
+    <div className={`meter-card ${meterType.className}`} key={meter.eanCode}>
+      <div className="icon-container">
+        <FontAwesomeIcon icon={meterType.icon} size="1x" />
+      </div>
+      <div className="meter-details">
         {meter.registers.map((register) => (
-          <li>{mapRegisterTariff(register.tariff).name}: --</li>
+          <div>
+            <strong>{mapRegisterTariff(register.tariff).name}</strong> 123456
+          </div>
         ))}
-      </ul>
-    </li>
+      </div>
+      <a href="#" className="edit-button">
+        <FontAwesomeIcon icon={faPencilAlt} />
+      </a>
+    </div>
   );
 }
 
 function mapMeterType(meterType) {
   switch (meterType) {
     case 1:
-      return { code: "E", name: "Electricity", icon: "fa-bolt" };
+      return { code: "E", className: "electricity", icon: faBolt };
     case 2:
-      return { code: "W", name: "Water", icon: "fa-tint" };
+      return { code: "W", className: "water", icon: faTint };
     case 3:
-      return { code: "G", name: "Gas", icon: "fa-burn" };
+      return { code: "G", className: "gas", icon: faBurn };
   }
 }
 
 function mapRegisterTariff(tariff) {
-  console.log("hi");
   switch (tariff) {
     case 1:
       return { name: "Peek" };

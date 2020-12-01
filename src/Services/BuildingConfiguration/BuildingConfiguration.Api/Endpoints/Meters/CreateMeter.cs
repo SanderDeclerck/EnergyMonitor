@@ -20,8 +20,8 @@ namespace BuildingConfiguration.Api.Endpoints.Meters
         [ProducesResponseType(typeof(Result), Status200OK)]
         [ProducesResponseType(typeof(string), Status400BadRequest)]
         [ProducesResponseType(typeof(string), Status404NotFound)]
-        public async Task<ActionResult<Result>> HandleAsync([FromRoute] string buildingId,
-            [FromBody] Command command,
+        public async Task<ActionResult<Result>> HandleAsync([FromBody] Command command,
+            [FromRoute] string buildingId,
             CancellationToken cancellationToken)
         {
             if (!Guid.TryParse(buildingId, out var buildingGuid))
@@ -43,18 +43,12 @@ namespace BuildingConfiguration.Api.Endpoints.Meters
             return Ok(new Result());
         }
 
-        private BuildingConfiguration.Domain.Aggregates.BuildingAggregate.MeterType Map(MeterType meterType)
+        private BuildingConfiguration.Domain.Aggregates.BuildingAggregate.MeterType Map(int meterType)
         {
-            return BuildingConfiguration.Domain.Aggregates.BuildingAggregate.MeterType.FromValue((int)meterType);
+            return BuildingConfiguration.Domain.Aggregates.BuildingAggregate.MeterType.FromValue(meterType);
         }
 
-        public record Command(string EanCode, MeterType MeterType, bool HasOffPeakRegister);
+        public record Command(string EanCode, int MeterType, bool HasOffPeakRegister);
         public record Result();
-        public enum MeterType
-        {
-            Electricity = 1,
-            Water = 2,
-            Gas = 3
-        }
     }
 }

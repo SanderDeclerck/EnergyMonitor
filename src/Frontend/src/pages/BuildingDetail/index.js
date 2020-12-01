@@ -18,16 +18,17 @@ export function BuildingDetail({ buildingId }) {
     <>
       <Link to="/">{"<< back"}</Link>
       <h1>Building</h1>
-      <div>
+      <div className="building-card">
         {state.isLoading ? (
           "loading..."
         ) : (
-          <ul>
-            <li>Name: {state.building.name}</li>
-            <li>Postal code: {state.building.postalCode}</li>
-            <li>City: {state.building.city}</li>
-            <li>Country: {state.building.country}</li>
-          </ul>
+          <>
+            <h3>{state.building.name}</h3>
+            <div className="address">
+              {state.building.postalCode} {state.building.city},{" "}
+              {state.building.country}
+            </div>
+          </>
         )}
       </div>
       <h2>Meters</h2>
@@ -37,7 +38,10 @@ export function BuildingDetail({ buildingId }) {
         <MeterList meters={state.building.meters} />
       )}
       <h3>Add meter</h3>
-      <MeterForm buildingId={state.building.id} />
+      <MeterForm
+        buildingId={state.building.id}
+        onMeterCreated={fetchBuilding}
+      />
     </>
   );
 }

@@ -15,7 +15,7 @@ export function Home() {
 
   return (
     <>
-      <h1>List of buildings:</h1>
+      <h1>List of buildings</h1>
       <BuildingList buildings={buildings} />
       <h2>Create new building</h2>
       <BuildingForm onBuildingCreated={loadBuildings} />

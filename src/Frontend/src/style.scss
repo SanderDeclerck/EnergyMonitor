@@ -1,0 +1,167 @@
+* {
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box; /* Firefox, other Gecko */
+  box-sizing: border-box; /* Opera/IE 8+ */
+}
+
+html,
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h1,
+h2,
+h3 {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  margin-top: 3rem;
+  text-align: right;
+}
+
+#app {
+  max-width: 400px;
+  padding: 0 1rem;
+  margin: 0 auto;
+}
+
+label {
+  font-weight: bold;
+  font-size: 0.95rem;
+  padding: 0.2rem 0.2rem 0.4rem 0.2rem;
+}
+
+input:not([type="checkbox"]),
+select {
+  display: block;
+  padding: 0.5rem;
+  width: 100%;
+  border: #ccc 1px solid;
+  border-radius: 0.5rem;
+  outline: none;
+  margin: 0.2rem 0 1rem;
+
+  &:hover {
+    border-color: yellowgreen;
+  }
+
+  &:focus {
+    border-color: yellowgreen;
+    box-shadow: 0 0 0 0.125em rgba(50, 115, 220, 0.25);
+  }
+}
+
+button {
+  padding: 0.8rem;
+  margin-top: 1rem;
+  width: 100%;
+  border: none;
+  background-color: rgb(58, 226, 80);
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 0.5rem;
+
+  &:hover {
+    background-color: rgb(51, 184, 69);
+  }
+
+  &:focus {
+    border: none;
+    outline: none;
+    background-color: rgb(51, 184, 69);
+  }
+}
+
+.building-card,
+.meter-card {
+  background-color: rgb(206, 215, 240);
+  padding-top: 1rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  margin: 2rem 0;
+
+  &.electricity {
+    background-color: #f8ca32;
+  }
+
+  &.water {
+    background-color: #32caf8;
+  }
+
+  &.gas {
+    background-color: #f87132;
+  }
+
+  h3 {
+    margin: 0 2rem;
+    text-align: center;
+  }
+
+  a {
+    margin-top: 1.2rem;
+    display: block;
+    padding: 0.7rem;
+    background-color: rgb(51, 98, 184);
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+
+    &:hover {
+      background-color: rgb(24, 63, 134);
+    }
+  }
+
+  .icons {
+    margin-top: 0.5rem;
+    text-align: center;
+
+    svg {
+      margin: 0 0.7rem;
+    }
+  }
+
+  .address {
+    margin: 0.5rem;
+    font-size: 0.9rem;
+    color: #333;
+    text-align: center;
+    font-style: italic;
+  }
+}
+
+.meter-card {
+  display: flex;
+  padding-top: 0;
+  flex-direction: row;
+
+  .icon-container {
+    padding: 1rem;
+    color: white;
+    background-color: rgba($color: #000, $alpha: 0.3);
+    display: flex;
+    align-items: center;
+  }
+
+  .meter-details {
+    flex-grow: 1;
+    padding: 1rem;
+    div {
+      margin-top: 0.5rem;
+    }
+  }
+
+  .edit-button {
+    margin: 0;
+    padding: 1rem;
+    color: black;
+    background-color: rgba($color: #fff, $alpha: 0.5);
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      background-color: rgba($color: #000, $alpha: 0.1);
+    }
+  }
+}
