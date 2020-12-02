@@ -152,13 +152,26 @@ button {
     }
   }
 
-  .edit-button {
+  .button {
     margin: 0;
     padding: 1rem;
     color: black;
     background-color: rgba($color: #fff, $alpha: 0.5);
     display: flex;
     align-items: center;
+
+    &:hover {
+      background-color: rgba($color: #000, $alpha: 0.1);
+    }
+
+    &[hidden] {
+      display: none;
+    }
+  }
+
+  button {
+    color: black;
+    background-color: rgba($color: #fff, $alpha: 0.5);
 
     &:hover {
       background-color: rgba($color: #000, $alpha: 0.1);

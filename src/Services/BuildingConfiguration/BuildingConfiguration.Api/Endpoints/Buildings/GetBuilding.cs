@@ -50,11 +50,12 @@ namespace BuildingConfiguration.Api.Endpoints.Buildings
                 building.Meters.Select(meter =>
                     new Meter(meter.EanCode,
                         meter.MeterType,
-                        meter.Registers.Select(register => new Register(register.Tariff)))));
+                        meter.Registers.Select(register =>
+                        new Register(register.Tariff, register.LastReading)))));
         }
 
         public record Result(string Id, string Name, string PostalCode, string City, string Country, IEnumerable<Meter> Meters);
         public record Meter(string EanCode, int MeterType, IEnumerable<Register> Registers);
-        public record Register(int Tariff);
+        public record Register(int Tariff, decimal? LastReading);
     }
 }

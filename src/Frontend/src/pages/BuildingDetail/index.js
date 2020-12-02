@@ -35,7 +35,11 @@ export function BuildingDetail({ buildingId }) {
       {state.isLoading ? (
         "loading..."
       ) : (
-        <MeterList meters={state.building.meters} />
+        <MeterList
+          buildingId={buildingId}
+          meters={state.building.meters}
+          onMeterUpdated={fetchBuilding}
+        />
       )}
       <h3>Add meter</h3>
       <MeterForm
