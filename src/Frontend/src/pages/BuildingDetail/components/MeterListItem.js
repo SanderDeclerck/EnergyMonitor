@@ -45,12 +45,18 @@ export function MeterListItem({ buildingId, meter, onUpdated }) {
 }
 
 function MeterDetails({ meter }) {
+  var formatter = new Intl.NumberFormat(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1, useGrouping: false });
+
   return (
     <>
       {meter.registers.map((register) => (
         <div key={register.tariff}>
-          <strong>{mapRegisterTariff(register.tariff).name}</strong>{" "}
-          {register.lastReading || "--"}
+          <div className="meter-reading">
+            <span className="reading">{formatter.format(register.lastReading)}</span>
+            <span className="tariff">
+              {mapRegisterTariff(register.tariff).name}
+            </span>
+          </div>
         </div>
       ))}
     </>

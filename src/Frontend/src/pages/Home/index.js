@@ -1,24 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer } from "react";
 import { BuildingForm } from "./components/BuildingForm";
 import { BuildingList } from "./components/BuildingList";
+import { fetchBuildings } from "./state/fetchBuildings";
+import { overviewPageReducer } from "./state/overviewPageReducer";
 
 export function Home() {
-  var [buildings, setBuildings] = useState([]);
+  var [overviewState, dispatch] = useReducer(overviewPageReducer, {
+    isLoading: true,
+    isError: false,
+    buildings: [],
+  });
 
-  function loadBuildings() {
-    fetch("https://localhost:5001/api/building")
-      .then((response) => response.json())
-      .then((data) => setBuildings(data.buildings));
-  }
-
-  useEffect(loadBuildings, []);
+  useEffect(function initialize() {
+    fetchBuildings(dispatch);
+  }, []);
 
   return (
     <>
       <h1>List of buildings</h1>
-      <BuildingList buildings={buildings} />
+      <BuildingList buildings={overviewState.buildings} />
       <h2>Create new building</h2>
-      <BuildingForm onBuildingCreated={loadBuildings} />
+      <BuildingForm onBuildingCreated={() => fetchBuildings(dispatch)} />
     </>
   );
 }

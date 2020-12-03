@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "@reach/router";
 import { MeterForm } from "./components/MeterForm";
 import { MeterList } from "./components/MeterList";
+import { BuildingSummary } from "./components/BuildingSummary";
 
 export function BuildingDetail({ buildingId }) {
   var [state, setState] = useState({ isLoading: true, building: {} });
@@ -18,19 +19,11 @@ export function BuildingDetail({ buildingId }) {
     <>
       <Link to="/">{"<< back"}</Link>
       <h1>Building</h1>
-      <div className="building-card">
-        {state.isLoading ? (
-          "loading..."
-        ) : (
-          <>
-            <h3>{state.building.name}</h3>
-            <div className="address">
-              {state.building.postalCode} {state.building.city},{" "}
-              {state.building.country}
-            </div>
-          </>
-        )}
-      </div>
+      {state.isLoading ? (
+        "loading..."
+      ) : (
+        <BuildingSummary building={state.building} />
+      )}
       <h2>Meters</h2>
       {state.isLoading ? (
         "loading..."
@@ -49,3 +42,4 @@ export function BuildingDetail({ buildingId }) {
     </>
   );
 }
+
