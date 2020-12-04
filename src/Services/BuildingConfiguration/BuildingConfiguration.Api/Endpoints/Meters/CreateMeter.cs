@@ -16,7 +16,7 @@ namespace BuildingConfiguration.Api.Endpoints.Meters
             _buildingRepository = buildingRepository;
         }
 
-        [HttpPost(Routes.MeterUri)]
+        [HttpPost(Routes.CreateMeterUri)]
         [ProducesResponseType(typeof(Result), Status200OK)]
         [ProducesResponseType(typeof(string), Status400BadRequest)]
         [ProducesResponseType(typeof(string), Status404NotFound)]

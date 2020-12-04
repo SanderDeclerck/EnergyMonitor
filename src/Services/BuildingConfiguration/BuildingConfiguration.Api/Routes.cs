@@ -9,7 +9,7 @@ namespace BuildingConfiguration.Api
         public const string DeleteBuildingUri = "api/building/{id}";
 
         // Meter endpoints
-        public const string MeterUri = "api/building/{buildingId}/meter";
+        public const string CreateMeterUri = "api/building/{buildingId}/meter";
         public const string RegisterReadingsUri = "api/building/{buildingId}/meter/{meterEanCode}/readings";
     }
 }
