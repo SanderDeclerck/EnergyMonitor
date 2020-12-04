@@ -15,7 +15,7 @@ namespace BuildingConfiguration.Infrastructure
 
         public void Serialize(BsonSerializationContext context, BsonSerializationArgs args, object value)
         {
-            context.Writer.WriteInt32((value as T).Value);
+            context.Writer.WriteInt32((value as T)?.Value ?? default);
         }
     }
 }

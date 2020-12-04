@@ -1,47 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { Link } from "@reach/router";
 import { MeterForm } from "./components/MeterForm";
 import { MeterList } from "./components/MeterList";
+import { BuildingSummary } from "./components/BuildingSummary";
+import { BuildingDetailContext } from "./state/BuildingDetailContext";
 
-export function BuildingDetail({ buildingId }) {
-  var [state, setState] = useState({ isLoading: true, building: {} });
-
-  useEffect(fetchBuilding, []);
-
-  function fetchBuilding() {
-    fetch(`https://localhost:5001/api/building/${buildingId}`)
-      .then((response) => response.json())
-      .then((data) => setState({ ...state, isLoading: false, building: data }));
-  }
+export function BuildingDetail() {
+  var { buildingDetail } = useContext(BuildingDetailContext);
 
   return (
     <>
       <Link to="/">{"<< back"}</Link>
       <h1>Building</h1>
-      <div className="building-card">
-        {state.isLoading ? (
-          "loading..."
-        ) : (
-          <>
-            <h3>{state.building.name}</h3>
-            <div className="address">
-              {state.building.postalCode} {state.building.city},{" "}
-              {state.building.country}
-            </div>
-          </>
-        )}
-      </div>
+      {buildingDetail.isLoading ? "loading..." : <BuildingSummary />}
       <h2>Meters</h2>
-      {state.isLoading ? (
-        "loading..."
-      ) : (
-        <MeterList meters={state.building.meters} />
-      )}
+      {buildingDetail.isLoading ? "loading..." : <MeterList />}
       <h3>Add meter</h3>
-      <MeterForm
-        buildingId={state.building.id}
-        onMeterCreated={fetchBuilding}
-      />
+      <MeterForm />
     </>
   );
 }

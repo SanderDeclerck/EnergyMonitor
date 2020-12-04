@@ -1,28 +1,33 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using BuildingConfiguration.Domain.Aggregates.BuildingAggregate;
 using Microsoft.AspNetCore.Mvc;
+using NodaTime;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace BuildingConfiguration.Api.Endpoints.Meters
 {
-    public class CreateMeter : ControllerBase
+    public class RegisterReadings : ControllerBase
     {
         private readonly IBuildingRepository _buildingRepository;
+        private readonly IClock _clock;
 
-        public CreateMeter(IBuildingRepository buildingRepository)
+        public RegisterReadings(IBuildingRepository buildingRepository, IClock clock)
         {
             _buildingRepository = buildingRepository;
+            _clock = clock;
         }
 
-        [HttpPost(Routes.CreateMeterUri)]
-        [ProducesResponseType(typeof(Result), Status200OK)]
+        [HttpPost(Routes.RegisterReadingsUri)]
+        [ProducesResponseType(Status200OK)]
         [ProducesResponseType(typeof(string), Status400BadRequest)]
         [ProducesResponseType(typeof(string), Status404NotFound)]
-        public async Task<ActionResult<Result>> HandleAsync([FromBody] Command command,
-            [FromRoute] string buildingId,
-            CancellationToken cancellationToken)
+        public async Task<ActionResult> HandleAsync([FromRoute] string buildingId,
+        [FromRoute] string meterEanCode,
+        [FromBody] Command command,
+        CancellationToken cancellationToken)
         {
             if (!Guid.TryParse(buildingId, out var buildingGuid) || command == null)
             {
@@ -36,19 +41,18 @@ namespace BuildingConfiguration.Api.Endpoints.Meters
                 return NotFound($"The building with id \"{buildingId}\" could not be found.");
             }
 
-            building.AddMeter(new Meter(command.EanCode, Map(command.MeterType), command.HasOffPeakRegister));
+            foreach (var reading in command.Readings)
+            {
+                var tariff = Tariff.FromValue(reading.Tariff);
+                building.AddReading(meterEanCode, tariff, reading.Value, _clock);
+            }
 
             await _buildingRepository.Update(building, cancellationToken);
 
-            return Ok(new Result());
+            return Ok();
         }
 
-        private static BuildingConfiguration.Domain.Aggregates.BuildingAggregate.MeterType Map(int meterType)
-        {
-            return BuildingConfiguration.Domain.Aggregates.BuildingAggregate.MeterType.FromValue(meterType);
-        }
-
-        public record Command(string EanCode, int MeterType, bool HasOffPeakRegister);
-        public record Result();
+        public record Command(IEnumerable<Reading> Readings);
+        public record Reading(int Tariff, decimal Value);
     }
 }

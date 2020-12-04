@@ -12,7 +12,7 @@ namespace Invoicing.Base.Ddd
             return Id == default(Guid);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null || !(obj is Entity item))
             {

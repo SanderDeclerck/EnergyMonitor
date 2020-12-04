@@ -13,7 +13,7 @@ namespace BuildingConfiguration.Infrastructure
             services.AddScoped<IMongoClient>(_ => new MongoClient(mongoConnectionstring));
             services.AddScoped<IBuildingRepository>(provider =>
             {
-                var mongoClient = provider.GetService<IMongoClient>();
+                var mongoClient = provider.GetRequiredService<IMongoClient>();
                 return new BuildingRepository(mongoClient.GetDatabase("BuildingApi"));
             });
 

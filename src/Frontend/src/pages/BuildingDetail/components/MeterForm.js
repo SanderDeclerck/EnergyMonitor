@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { BuildingDetailContext } from "../state/BuildingDetailContext";
 
-export function MeterForm({ buildingId, onMeterCreated }) {
-  var initialState = {
+export function MeterForm() {
+  var { buildingDetail, reload } = useContext(BuildingDetailContext);
+  var [formState, setFormState] = useState({
     eanCode: "",
     meterType: undefined,
     hasOffPeakRegister: false,
-  };
-
-  var [formState, setFormState] = useState(initialState);
+  });
 
   function handleInputChange(event) {
     var name = event.target.name;
@@ -25,15 +25,18 @@ export function MeterForm({ buildingId, onMeterCreated }) {
         formState.meterType == 1 && formState.hasOffPeakRegister,
     };
 
-    fetch(`https://localhost:5001/api/building/${buildingId}/meter`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    }).then(meterCreated);
+    fetch(
+      `https://localhost:5001/api/building/${buildingDetail.building.id}/meter`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      }
+    ).then(meterCreated);
   }
 
   function meterCreated() {
-    onMeterCreated();
+    reload();
     setFormState(initialState);
   }
 

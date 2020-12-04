@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using Invoicing.Base.Ddd;
+using NodaTime;
 
 namespace BuildingConfiguration.Domain.Aggregates.BuildingAggregate
 {
@@ -29,6 +31,13 @@ namespace BuildingConfiguration.Domain.Aggregates.BuildingAggregate
         public void AddMeter(Meter meter)
         {
             Meters = Meters.Add(meter);
+        }
+
+        public void AddReading(string meterEanCode, Tariff tariff, decimal value, IClock clock)
+        {
+            var meter = Meters.Single(meter => meter.EanCode == meterEanCode);
+            var register = meter.Registers.Single(register => register.Tariff == tariff);
+            register.RegisterReading(value, clock);
         }
     }
 }

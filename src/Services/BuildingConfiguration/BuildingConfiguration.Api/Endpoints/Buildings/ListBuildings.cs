@@ -2,13 +2,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Ardalis.ApiEndpoints;
 using BuildingConfiguration.Domain.Aggregates.BuildingAggregate;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BuildingConfiguration.Api.Endpoints.Buildings
 {
-    public class ListBuildings : BaseAsyncEndpoint<ListBuildings.Result>
+    public class ListBuildings : ControllerBase
     {
         private readonly IBuildingRepository _buildingRepository;
 
@@ -17,8 +16,8 @@ namespace BuildingConfiguration.Api.Endpoints.Buildings
             _buildingRepository = buildingRepository;
         }
 
-        [HttpGet(Routes.BuildingUri)]
-        public async override Task<ActionResult<Result>> HandleAsync(CancellationToken cancellationToken = default)
+        [HttpGet(Routes.ListBuildingUri)]
+        public async Task<ActionResult<Result>> HandleAsync(CancellationToken cancellationToken = default)
         {
             var buildings = await _buildingRepository.GetAll(cancellationToken);
 

@@ -19,7 +19,7 @@ namespace BuildingConfiguration.Infrastructure
         protected override void AddItem(object accumulator, TItem item)
         {
             var builder = accumulator as ImmutableList<TItem>.Builder;
-            builder.Add(item);
+            builder?.Add(item);
         }
 
         protected override object CreateAccumulator()
@@ -35,7 +35,7 @@ namespace BuildingConfiguration.Infrastructure
         protected override ImmutableList<TItem> FinalizeResult(object accumulator)
         {
             var builder = accumulator as ImmutableList<TItem>.Builder;
-            return builder.ToImmutableList();
+            return builder?.ToImmutableList() ?? ImmutableList<TItem>.Empty;
         }
     }
 }

@@ -2,6 +2,7 @@ using System.Collections.Immutable;
 using BuildingConfiguration.Domain.Aggregates.BuildingAggregate;
 using Invoicing.Base.Ddd;
 using MongoDB.Bson.Serialization;
+using NodaTime;
 
 namespace BuildingConfiguration.Infrastructure
 {
@@ -10,6 +11,7 @@ namespace BuildingConfiguration.Infrastructure
         public static void SetupClassMaps()
         {
             BsonSerializer.RegisterGenericSerializerDefinition(typeof(ImmutableList<>), typeof(ImmutableListSerializer<>));
+            BsonSerializer.RegisterSerializer(typeof(Instant), new InstantSerializer());
 
             BsonClassMap.RegisterClassMap<Entity>(classMapInitializer =>
             {
@@ -46,6 +48,8 @@ namespace BuildingConfiguration.Infrastructure
             BsonClassMap.RegisterClassMap<Register>(classMapInitializer =>
             {
                 classMapInitializer.MapProperty(register => register.Tariff).SetSerializer(new SmartEnumSerializer<Tariff>());
+                classMapInitializer.MapProperty(register => register.LastReading);
+                classMapInitializer.MapProperty(register => register.LastReadingRegisteredOn);
 
                 classMapInitializer.MapCreator(register => new Register(register.Tariff));
             });
