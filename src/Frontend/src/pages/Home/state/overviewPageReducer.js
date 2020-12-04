@@ -3,7 +3,6 @@ export const SET_BUILDING = "SET_BUILDING";
 export const GET_BUILDING_FAILED = "GET_BUILDING_FAILED";
 
 export function overviewPageReducer(state, action) {
-  console.log(action);
   if (action.type == LOADING_ACTION) {
     return { ...state, isLoading: true, isError: false, buildings: [] };
   }

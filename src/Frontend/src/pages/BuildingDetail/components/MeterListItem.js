@@ -1,35 +1,36 @@
-import {
-  faCheck,
-  faPencilAlt,
-  faTimes,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPencilAlt, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
-import { mapMeterType, mapRegisterTariff } from "./MeterList";
+import React, { useContext, useState } from "react";
+import { BuildingDetailContext } from "../state/BuildingDetailContext";
+import { MeterDetails } from "./MeterDetails";
+import { MeterReadingForm } from "./MeterReadingForm";
 
-export function MeterListItem({ buildingId, meter, onUpdated }) {
+export function MeterListItem({ meter }) {
+  var { buildingDetail, reload } = useContext(BuildingDetailContext);
   var [isEditMode, setEditMode] = useState(false);
 
-  function toggleEditMode(ev) {
-    ev && ev.preventDefault();
+  function toggleEditMode() {
     setEditMode(!isEditMode);
+    return false;
   }
 
   function meterReadingRegistered() {
     toggleEditMode();
-    onUpdated();
+    reload();
   }
 
-  var meterType = mapMeterType(meter.meterType);
   return (
-    <div className={`meter-card ${meterType.className}`} key={meter.eanCode}>
+    <div
+      className={`meter-card ${meter.meterType.className}`}
+      key={meter.eanCode}
+    >
       <div className="icon-container">
-        <FontAwesomeIcon icon={meterType.icon} size="1x" />
+        <FontAwesomeIcon icon={meter.meterType.icon} size="1x" />
       </div>
       <div className="meter-details">
         {isEditMode ? (
           <MeterReadingForm
-            buildingId={buildingId}
+            buildingId={buildingDetail.building.id}
             meter={meter}
             onReadingRegistered={meterReadingRegistered}
           />
@@ -41,85 +42,5 @@ export function MeterListItem({ buildingId, meter, onUpdated }) {
         <FontAwesomeIcon icon={isEditMode ? faTimes : faPencilAlt} />
       </a>
     </div>
-  );
-}
-
-function MeterDetails({ meter }) {
-  var formatter = new Intl.NumberFormat(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 1, useGrouping: false });
-
-  return (
-    <>
-      {meter.registers.map((register) => (
-        <div key={register.tariff}>
-          <div className="meter-reading">
-            <span className="reading">{formatter.format(register.lastReading)}</span>
-            <span className="tariff">
-              {mapRegisterTariff(register.tariff).name}
-            </span>
-          </div>
-        </div>
-      ))}
-    </>
-  );
-}
-
-function MeterReadingForm({ buildingId, meter, onReadingRegistered }) {
-  var initialState = {
-    registers: meter.registers.map((register) => {
-      return { tariff: register.tariff, value: register.lastReading || 0 };
-    }),
-  };
-
-  var [formState, setFormState] = useState(initialState);
-
-  function handleInputChange(event) {
-    var tariff = event.target.name;
-    var newRegisters = formState.registers.map(function updateValue(register) {
-      if (register.tariff == tariff) {
-        return { tariff: register.tariff, value: Number(event.target.value) };
-      }
-      return register;
-    });
-    setFormState({ ...formState, registers: newRegisters });
-  }
-
-  function registerReading() {
-    var data = {
-      readings: formState.registers.map(mapRegisterToRestData),
-    };
-
-    fetch(
-      `https://localhost:5001/api/building/${buildingId}/meter/${meter.eanCode}/readings`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      }
-    ).then(onReadingRegistered);
-
-    function mapRegisterToRestData(register) {
-      return { tariff: register.tariff, value: register.value };
-    }
-  }
-
-  return (
-    <>
-      {formState.registers.map((register) => (
-        <>
-          <label htmlFor={register.tariff}>
-            {mapRegisterTariff(register.tariff).name}
-          </label>
-          <input
-            type="number"
-            name={register.tariff}
-            value={register.value}
-            onChange={handleInputChange}
-          />
-        </>
-      ))}
-      <button onClick={registerReading}>
-        <FontAwesomeIcon icon={faCheck} /> Save
-      </button>
-    </>
   );
 }
