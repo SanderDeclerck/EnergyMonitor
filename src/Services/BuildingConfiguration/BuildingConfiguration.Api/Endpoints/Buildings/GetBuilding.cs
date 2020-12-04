@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Ardalis.ApiEndpoints;
 using BuildingConfiguration.Domain.Aggregates.BuildingAggregate;
 using Microsoft.AspNetCore.Mvc;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace BuildingConfiguration.Api.Endpoints.Buildings
 {
-    public class GetBuilding : BaseAsyncEndpoint<string, GetBuilding.Result>
+    public class GetBuilding : ControllerBase
     {
         private readonly IBuildingRepository _buildingRepository;
 
@@ -19,11 +18,11 @@ namespace BuildingConfiguration.Api.Endpoints.Buildings
             _buildingRepository = buildingRepository;
         }
 
-        [HttpGet(Routes.BuildingDetailUri)]
+        [HttpGet(Routes.GetBuildingDetailUri)]
         [ProducesResponseType(typeof(Result), Status200OK)]
         [ProducesResponseType(typeof(string), Status400BadRequest)]
         [ProducesResponseType(typeof(string), Status404NotFound)]
-        public async override Task<ActionResult<Result>> HandleAsync(string id, CancellationToken cancellationToken)
+        public async Task<ActionResult<Result>> HandleAsync(string id, CancellationToken cancellationToken)
         {
             if (!Guid.TryParse(id, out var buildingGuid))
             {

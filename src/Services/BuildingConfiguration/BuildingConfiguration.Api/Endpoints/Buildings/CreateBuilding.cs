@@ -14,7 +14,7 @@ namespace BuildingConfiguration.Api.Endpoints.Buildings
             _buildingRespository = buildingRespository;
         }
 
-        [HttpPost(Routes.BuildingUri)]
+        [HttpPost(Routes.CreateBuildingUri)]
         public async Task<ActionResult<Result>> HandleAsync([FromBody] Command request, CancellationToken cancellationToken = default)
         {
             var buildingLocation = new BuildingLocation(request.City, request.Postalcode, request.Country);

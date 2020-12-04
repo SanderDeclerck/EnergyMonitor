@@ -24,7 +24,7 @@ namespace BuildingConfiguration.Api.Endpoints.Meters
             [FromRoute] string buildingId,
             CancellationToken cancellationToken)
         {
-            if (!Guid.TryParse(buildingId, out var buildingGuid))
+            if (!Guid.TryParse(buildingId, out var buildingGuid) || command == null)
             {
                 return BadRequest($"The id \"{buildingId}\" could not be parsed.");
             }
@@ -43,7 +43,7 @@ namespace BuildingConfiguration.Api.Endpoints.Meters
             return Ok(new Result());
         }
 
-        private BuildingConfiguration.Domain.Aggregates.BuildingAggregate.MeterType Map(int meterType)
+        private static BuildingConfiguration.Domain.Aggregates.BuildingAggregate.MeterType Map(int meterType)
         {
             return BuildingConfiguration.Domain.Aggregates.BuildingAggregate.MeterType.FromValue(meterType);
         }

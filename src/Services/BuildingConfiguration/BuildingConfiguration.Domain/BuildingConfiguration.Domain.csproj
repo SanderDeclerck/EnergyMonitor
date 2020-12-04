@@ -6,12 +6,11 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ardalis.SmartEnum" Version="2.0.0" />
-    <PackageReference Include="NodaTime" Version="3.0.3" />
+    <PackageReference Include="Ardalis.SmartEnum" />
+    <PackageReference Include="NodaTime" />
   </ItemGroup>
 
 </Project>

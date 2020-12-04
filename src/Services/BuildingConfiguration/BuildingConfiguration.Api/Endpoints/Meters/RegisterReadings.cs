@@ -29,7 +29,7 @@ namespace BuildingConfiguration.Api.Endpoints.Meters
         [FromBody] Command command,
         CancellationToken cancellationToken)
         {
-            if (!Guid.TryParse(buildingId, out var buildingGuid))
+            if (!Guid.TryParse(buildingId, out var buildingGuid) || command == null)
             {
                 return BadRequest($"The id \"{buildingId}\" could not be parsed.");
             }

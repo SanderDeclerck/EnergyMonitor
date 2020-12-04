@@ -16,7 +16,7 @@ namespace BuildingConfiguration.Api.Endpoints.Buildings
             _buildingRepository = buildingRepository;
         }
 
-        [HttpDelete(Routes.BuildingDetailUri)]
+        [HttpDelete(Routes.DeleteBuildingUri)]
         [ProducesResponseType(Status200OK)]
         [ProducesResponseType(typeof(string), Status400BadRequest)]
         public async Task<ActionResult> HandleAsync([FromRoute] string id, CancellationToken cancellationToken)
