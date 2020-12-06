@@ -7,24 +7,25 @@ namespace BuildingConfiguration.Domain.Aggregates.BuildingAggregate
 {
     public class Register : ValueObject
     {
-        public Register(Tariff tariff)
+        public Register(Tariff tariff, decimal? lastReading, Instant? lastReadingRegisteredOn)
         {
             Tariff = tariff;
+            LastReading = lastReading;
+            LastReadingRegisteredOn = lastReadingRegisteredOn;
         }
 
-        public Tariff Tariff { get; private set; }
-        public decimal? LastReading { get; private set; }
-        public Instant? LastReadingRegisteredOn { get; private set; }
+        public Tariff Tariff { get; }
+        public decimal? LastReading { get; }
+        public Instant? LastReadingRegisteredOn { get; }
 
-        public void RegisterReading(decimal value, IClock clock)
+        public Register WithNewReading(decimal value, IClock clock)
         {
             if (value < LastReading)
             {
                 throw new ArgumentException($"The value of a new meter reading cannot be less than the value of the previous reading.", nameof(value));
             }
 
-            LastReading = value;
-            LastReadingRegisteredOn = clock.GetCurrentInstant();
+            return new Register(Tariff, value, clock.GetCurrentInstant());
         }
 
         protected override IEnumerable<object> GetAtomicValues()

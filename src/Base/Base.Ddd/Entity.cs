@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using MediatR;
 
 namespace Invoicing.Base.Ddd
 {
@@ -50,6 +52,24 @@ namespace Invoicing.Base.Ddd
             }
 
             return base.GetHashCode();
+        }
+
+        private List<INotification> _domainEvents = new List<INotification>();
+        public IReadOnlyCollection<INotification> DomainEvents => _domainEvents.AsReadOnly();
+
+        protected void AddDomainEvent(INotification eventItem)
+        {
+            _domainEvents.Add(eventItem);
+        }
+
+        protected void RemoveDomainEvent(INotification eventItem)
+        {
+            _domainEvents.Remove(eventItem);
+        }
+
+        public void ClearDomainEvents()
+        {
+            _domainEvents.Clear();
         }
     }
 }

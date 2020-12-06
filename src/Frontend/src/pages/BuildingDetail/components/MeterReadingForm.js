@@ -27,7 +27,7 @@ export function MeterReadingForm({ buildingId, meter, onReadingRegistered }) {
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(mapFormStateToResponse(readings)),
+        body: JSON.stringify(mapFormStateToResponse()),
       }
     ).then(onReadingRegistered);
   }

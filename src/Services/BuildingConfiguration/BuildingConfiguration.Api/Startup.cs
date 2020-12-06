@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using BuildingConfiguration.Infrastructure;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using NodaTime;
+using RabbitMQ.Client;
 
 namespace BuildingConfiguration.Api
 {
@@ -34,6 +36,10 @@ namespace BuildingConfiguration.Api
 
             services.AddCors(corsOptions => corsOptions.AddDefaultPolicy(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
             services.AddSingleton<IClock>(_ => SystemClock.Instance);
+            services.AddMediatR(new[] { typeof(Startup).Assembly, typeof(Infrastructure.ServiceCollectionExtensions).Assembly });
+
+            services.AddSingleton(_ => new ConnectionFactory() { HostName = "localhost" }.CreateConnection());
+            services.AddSingleton(provider => provider.GetRequiredService<IConnection>().CreateModel());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

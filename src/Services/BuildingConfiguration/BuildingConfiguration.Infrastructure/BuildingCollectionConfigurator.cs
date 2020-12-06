@@ -51,7 +51,8 @@ namespace BuildingConfiguration.Infrastructure
                 classMapInitializer.MapProperty(register => register.LastReading);
                 classMapInitializer.MapProperty(register => register.LastReadingRegisteredOn);
 
-                classMapInitializer.MapCreator(register => new Register(register.Tariff));
+                classMapInitializer.MapCreator(register => new Register(register.Tariff, null, null));
+                classMapInitializer.MapCreator(register => new Register(register.Tariff, register.LastReading, register.LastReadingRegisteredOn));
             });
         }
     }
