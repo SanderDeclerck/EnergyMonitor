@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using BuildingConfiguration.Domain.Aggregates.BuildingAggregate;
+using Invoicing.Base.Ddd;
+using MediatR;
 using MongoDB.Driver;
 
 namespace BuildingConfiguration.Infrastructure
@@ -11,16 +13,19 @@ namespace BuildingConfiguration.Infrastructure
     {
         private const string MongoCollectionName = "Buildings";
         private readonly IMongoDatabase _mongoDatabase;
+        private readonly IMediator _mediator;
         private IMongoCollection<Building> BuildingCollection => _mongoDatabase.GetCollection<Building>(MongoCollectionName);
 
-        public BuildingRepository(IMongoDatabase mongoDatabase)
+        public BuildingRepository(IMongoDatabase mongoDatabase, IMediator mediator)
         {
             _mongoDatabase = mongoDatabase;
+            _mediator = mediator;
         }
 
         public async Task Add(Building building, CancellationToken cancellationToken)
         {
             await BuildingCollection.InsertOneAsync(building, null, cancellationToken);
+            await PublishDomainEvents(building);
         }
 
         public async Task<IList<Building>> GetAll(CancellationToken cancellationToken)
@@ -45,6 +50,16 @@ namespace BuildingConfiguration.Infrastructure
             await BuildingCollection.ReplaceOneAsync(
                 Builders<Building>.Filter.Where(buildingRecord => buildingRecord.Id == building.Id),
                 building);
+            await PublishDomainEvents(building);
+        }
+
+        private async Task PublishDomainEvents(Entity entity)
+        {
+            foreach (var domainEvent in entity.DomainEvents)
+            {
+                await _mediator.Publish(domainEvent);
+            }
+            entity.ClearDomainEvents();
         }
     }
 }

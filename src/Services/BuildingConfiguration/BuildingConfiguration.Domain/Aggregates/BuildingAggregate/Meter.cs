@@ -20,12 +20,17 @@ namespace BuildingConfiguration.Domain.Aggregates.BuildingAggregate
 
             if (hasOffPeakRegister)
             {
-                Registers = ImmutableList.CreateRange(new[] { new Register(Tariff.Peek), new Register(Tariff.OffPeek) });
+                Registers = ImmutableList.CreateRange(new[] { new Register(Tariff.Peek, null, null), new Register(Tariff.OffPeek, null, null) });
             }
             else
             {
-                Registers = ImmutableList.CreateRange(new[] { new Register(Tariff.AllDay) });
+                Registers = ImmutableList.CreateRange(new[] { new Register(Tariff.AllDay, null, null) });
             }
+        }
+
+        internal void ReplaceRegister(Register oldRegister, Register newRegister)
+        {
+            Registers = Registers.Replace(oldRegister, newRegister);
         }
 
         public string EanCode { get; private set; }

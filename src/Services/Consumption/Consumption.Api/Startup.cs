@@ -1,16 +1,14 @@
 using System.Threading.Tasks;
-using BuildingConfiguration.Infrastructure;
-using MediatR;
+using Consumption.Api.BackgroundServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using NodaTime;
 using RabbitMQ.Client;
 
-namespace BuildingConfiguration.Api
+namespace Consumption.Api
 {
     public class Startup
     {
@@ -28,18 +26,12 @@ namespace BuildingConfiguration.Api
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.CustomSchemaIds(type => type.FullName);
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "BuildingConfiguration.Api", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Consumption.Api", Version = "v1" });
             });
-
-            services.SetupInfrastructure(Configuration.GetConnectionString("MongoConnectionString"));
-
-            services.AddCors(corsOptions => corsOptions.AddDefaultPolicy(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
-            services.AddSingleton<IClock>(_ => SystemClock.Instance);
-            services.AddMediatR(new[] { typeof(Startup).Assembly, typeof(Infrastructure.ServiceCollectionExtensions).Assembly });
 
             services.AddSingleton(_ => new ConnectionFactory() { HostName = "localhost" }.CreateConnection());
             services.AddSingleton(provider => provider.GetRequiredService<IConnection>().CreateModel());
+            services.AddHostedService<QueueListenerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,11 +41,11 @@ namespace BuildingConfiguration.Api
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BuildingConfiguration.Api v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Consumption.Api v1"));
             }
 
             app.UseHttpsRedirection();
-            app.UseCors();
+
             app.UseRouting();
 
             app.UseAuthorization();

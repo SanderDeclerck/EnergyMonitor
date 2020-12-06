@@ -14,13 +14,12 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "watch",
+            "label": "Build Consumption Service",
             "command": "dotnet",
             "type": "process",
             "args": [
-                "watch",
-                "run",
-                "${workspaceFolder}/src/Services/BuildingConfiguration/BuildingConfiguration.Api/BuildingConfiguration.Api.csproj",
+                "build",
+                "${workspaceFolder}/src/Services/Consumption/Consumption.Api/Consumption.Api.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],

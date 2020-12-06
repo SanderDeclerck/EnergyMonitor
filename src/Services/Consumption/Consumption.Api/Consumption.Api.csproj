@@ -8,12 +8,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" />
     <PackageReference Include="Swashbuckle.AspNetCore" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\BuildingConfiguration.Domain\BuildingConfiguration.Domain.csproj" />
-    <ProjectReference Include="..\BuildingConfiguration.Infrastructure\BuildingConfiguration.Infrastructure.csproj" />
+    <PackageReference Include="RabbitMQ.Client" />
   </ItemGroup>
 
 </Project>

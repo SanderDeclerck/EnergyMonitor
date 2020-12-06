@@ -23,8 +23,36 @@
                 "ASPNETCORE_ENVIRONMENT": "Development"
             },
             "sourceFileMap": {
-                "/Views": "${workspaceFolder}/Views"
+                "/Views": "${workspaceFolder}/src/Services/BuildingConfiguration/BuildingConfiguration.Api/Views"
             }
+        },
+        {
+            "name": "Consumption Service",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Build Consumption Service",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/src/Services/Consumption/Consumption.Api/bin/Debug/net5.0/Consumption.Api.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/Services/Consumption/Consumption.Api",
+            "stopAtEntry": false,
+            // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/src/Services/Consumption/Consumption.Api/Views"
+            }
+        }
+    ],
+    "compounds": [
+        {
+            "name": "All",
+            "configurations": ["Building Service", "Consumption Service"]
         }
     ]
 }

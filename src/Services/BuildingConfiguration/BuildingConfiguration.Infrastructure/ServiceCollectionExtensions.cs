@@ -1,4 +1,6 @@
 using BuildingConfiguration.Domain.Aggregates.BuildingAggregate;
+using BuildingConfiguration.Infrastructure.EventHandlers;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 
@@ -14,8 +16,11 @@ namespace BuildingConfiguration.Infrastructure
             services.AddScoped<IBuildingRepository>(provider =>
             {
                 var mongoClient = provider.GetRequiredService<IMongoClient>();
-                return new BuildingRepository(mongoClient.GetDatabase("BuildingApi"));
+                var mediator = provider.GetRequiredService<IMediator>();
+                return new BuildingRepository(mongoClient.GetDatabase("BuildingApi"), mediator);
             });
+
+            services.AddScoped<ForwardDomainEventsToQueueEventHandler>();
 
             return services;
         }
