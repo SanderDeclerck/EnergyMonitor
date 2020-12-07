@@ -29,7 +29,7 @@ namespace Consumption.Api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Consumption.Api", Version = "v1" });
             });
 
-            services.AddSingleton(_ => new ConnectionFactory() { HostName = "localhost" }.CreateConnection());
+            services.AddSingleton(_ => new ConnectionFactory() { HostName = "queue" }.CreateConnection());
             services.AddSingleton(provider => provider.GetRequiredService<IConnection>().CreateModel());
             services.AddHostedService<QueueListenerService>();
         }
