@@ -22,14 +22,13 @@ namespace Consumption.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Consumption.Api", Version = "v1" });
             });
 
-            services.AddSingleton(_ => new ConnectionFactory() { HostName = "queue" }.CreateConnection());
+            services.AddSingleton(_ => new ConnectionFactory() { HostName = Configuration.GetSection("QueueHostname").Get<string>() }.CreateConnection());
             services.AddSingleton(provider => provider.GetRequiredService<IConnection>().CreateModel());
             services.AddHostedService<QueueListenerService>();
         }
