@@ -38,7 +38,7 @@ namespace BuildingConfiguration.Api
             services.AddSingleton<IClock>(_ => SystemClock.Instance);
             services.AddMediatR(new[] { typeof(Startup).Assembly, typeof(Infrastructure.ServiceCollectionExtensions).Assembly });
 
-            services.AddSingleton(_ => new ConnectionFactory() { HostName = "localhost" }.CreateConnection());
+            services.AddSingleton(_ => new ConnectionFactory() { HostName = Configuration.GetSection("QueueHostname").Get<string>() }.CreateConnection());
             services.AddSingleton(provider => provider.GetRequiredService<IConnection>().CreateModel());
         }
 

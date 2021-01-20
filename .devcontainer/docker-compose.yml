@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  workspace:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        USER_UID: 1000
+        USER_GID: 1000
+    volumes:
+      - ..:/workspace
+      - ~\.aspnet\https:/home/vscode/.aspnet/https
+    command: sleep infinity
+    environment:
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=helloworld
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/home/vscode/.aspnet/https/aspnetapp.pfx
+
+  db:
+    image: mongo:latest
+    restart: unless-stopped
+
+  queue:
+    image: rabbitmq:latest
+    restart: unless-stopped
